@@ -1,0 +1,90 @@
+// Program for jdbc Update
+
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Update
+{
+    public static void main(String...arg)
+    {
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/medix","root","root");
+            Scanner sc=new Scanner(System.in);
+            System.out.println("enter admin Id: ");
+            int adminId=sc.nextInt();
+            PreparedStatement st=con.prepareStatement("select * from admin where adminId = ?");
+            st.setInt(1,adminId);
+            ResultSet rs =st.executeQuery();
+            if(rs.next())
+            {
+                System.out.println("AdminId: "+rs.getInt(1)+"\nName: "+rs.getString(2)+"\nContact: "+rs.getString(3)+"\nEmail: "+rs.getString(4)+"\nPass: "+rs.getString(5));
+                
+                System.out.println("Select choice to update: ");
+                System.out.println("-----INDEX-----");             
+                System.out.println("1. Name");
+                System.out.println("2. Contact");
+                System.out.println("3. Email");
+                System.out.println("4. Pass");                
+                System.out.println("5. Exit");
+                
+                byte ch = sc.nextByte();
+                switch(ch)
+                {
+                    case 1: System.out.println("Enter updated name: ");
+                            sc.nextLine();
+                            String newName=sc.nextLine();
+                            PreparedStatement st1=con.prepareStatement("update admin set name=? where adminId = ?");
+                            st1.setString(1,newName);
+                            st1.setInt(2, adminId);
+                            st1.executeUpdate();
+                            System.out.println("Field Updated!!!");
+                            break;
+                            
+                    case 2: System.out.println("Enter updated contact: ");
+                            String newContact=sc.next();
+                            PreparedStatement st2=con.prepareStatement("update admin set contact=? where adminId = ?");
+                            st2.setString(1,newContact);
+                            st2.setInt(2, adminId);
+                            st2.executeUpdate();
+                            System.out.println("Field Updated!!!");
+                            break;
+                            
+                    case 3: System.out.println("Enter updated email: ");
+                            String newEmail=sc.next();
+                            PreparedStatement st3=con.prepareStatement("update admin set email=? where adminId = ?");
+                            st3.setString(1,newEmail);
+                            st3.setInt(2, adminId);
+                            st3.executeUpdate();
+                            System.out.println("Field Updated!!!");
+                            break;
+                            
+                    case 4: System.out.println("Enter updated pass: ");
+                            String newPass=sc.next();
+                            PreparedStatement st4=con.prepareStatement("update admin set pass=? where adminId = ?");
+                            st4.setString(1,newPass);
+                            st4.setInt(2, adminId);
+                            st4.executeUpdate();
+                            System.out.println("Field Updated!!!");
+                            break;
+                            
+                    case 5: System.exit(0);
+                            break;        
+                }
+            }
+            else
+            {
+                System.out.println("Record not found to update!!!");
+            }
+        }
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+}

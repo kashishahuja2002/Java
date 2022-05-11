@@ -1,0 +1,39 @@
+// Program for jdbc Search
+
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Search
+{
+    public static void main(String... args) 
+    {
+        try
+        {
+            
+        Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/medix","root","root");
+            Scanner sc=new Scanner(System.in);
+            System.out.println("enter admin Id: ");
+            int adminId=sc.nextInt();
+            PreparedStatement st=con.prepareStatement("select * from admin where adminId = ?");
+            st.setInt(1,adminId);
+            ResultSet rs =st.executeQuery();
+            if(rs.next())
+            {
+                System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+" "+rs.getString(5));
+            }
+            else
+            {
+                System.out.println("Record not found!!!");
+            }
+        }
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+}

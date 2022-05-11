@@ -1,0 +1,29 @@
+<!-- Program for validation using JavaScript -->
+
+<html>
+
+<script>
+	function validate()
+	{
+		if(frm.userId.value==0)
+			alert("Id is required");
+		if(frm.pwd.value==0)
+			alert("Pass is required");
+	}
+	
+	function printList()
+	{
+		window.print();
+	}
+</script>
+
+<body>
+	<form action="" name="frm">
+		<input type="text" name="userId" />
+		<input type="password" name="pwd" />
+		<input type="submit" value="login" onClick="validate()">
+		<input type="submit" value="print" onClick="printList()">
+	</form>		
+</body>
+
+</html>

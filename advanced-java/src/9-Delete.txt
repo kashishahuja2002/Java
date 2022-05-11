@@ -1,0 +1,41 @@
+// Program for jdbc Delete
+
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Delete
+{
+    public static void main(String...arg)
+    {
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/medix","root","root");
+            Scanner sc=new Scanner(System.in);
+            System.out.println("enter admin Id: ");
+            int adminId=sc.nextInt();
+            PreparedStatement st=con.prepareStatement("select * from admin where adminId = ?");
+            st.setInt(1,adminId);
+            ResultSet rs =st.executeQuery();
+            if(rs.next())
+            {
+                PreparedStatement st1=con.prepareStatement("delete from admin where adminId = ?");
+                st1.setInt(1, adminId);
+                st1.executeUpdate();
+                System.out.println("Record deleted!!!");
+            }
+            else
+            {
+                System.out.println("Record not found to delete!!!");
+            }
+        }
+        catch(ClassNotFoundException | SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+}
